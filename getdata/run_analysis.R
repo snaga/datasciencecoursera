@@ -1,18 +1,12 @@
 library(plyr)
 
-concat <- function(df1, df2)
-{
-  df <- df1
-  append(df, df2)
-  return(df)
-}
-
 write_concat_csv <- function(train, test, all)
 {
   train_csv <- read.csv(train)
   test_csv  <- read.csv(test)
-  all_csv <- concat(train_csv, test_csv)
-  write.table(all_csv, file = all, quote = FALSE, row.names = FALSE, col.names = FALSE)
+
+  write.table(train_csv, file = all, quote = FALSE, row.names = FALSE, col.names = FALSE)
+  write.table(test_csv, file = all, append = TRUE, quote = FALSE, row.names = FALSE, col.names = FALSE)
 }
 
 concat_all_csv <- function()
@@ -26,36 +20,6 @@ concat_all_csv <- function()
   write_concat_csv("UCI HAR Dataset/train/y_train.txt",
                    "UCI HAR Dataset/test/y_test.txt",
                    "y.txt")
-
-  write_concat_csv("UCI HAR Dataset/train/Inertial Signals/body_acc_x_train.txt",
-                   "UCI HAR Dataset/test/Inertial Signals/body_acc_x_test.txt",
-                   "body_acc_x.txt")
-  write_concat_csv("UCI HAR Dataset/train/Inertial Signals/body_acc_y_train.txt",
-                   "UCI HAR Dataset/test/Inertial Signals/body_acc_y_test.txt",
-                   "body_acc_y.txt")
-  write_concat_csv("UCI HAR Dataset/train/Inertial Signals/body_acc_z_train.txt",
-                   "UCI HAR Dataset/test/Inertial Signals/body_acc_z_test.txt",
-                   "body_acc_z.txt")
-
-  write_concat_csv("UCI HAR Dataset/train/Inertial Signals/body_gyro_x_train.txt",
-                   "UCI HAR Dataset/test/Inertial Signals/body_gyro_x_test.txt",
-                   "body_gyro_x.txt")
-  write_concat_csv("UCI HAR Dataset/train/Inertial Signals/body_gyro_y_train.txt",
-                   "UCI HAR Dataset/test/Inertial Signals/body_gyro_y_test.txt",
-                   "body_gyro_y.txt")
-  write_concat_csv("UCI HAR Dataset/train/Inertial Signals/body_gyro_z_train.txt",
-                   "UCI HAR Dataset/test/Inertial Signals/body_gyro_z_test.txt",
-                   "body_gyro_z.txt")
-
-  write_concat_csv("UCI HAR Dataset/train/Inertial Signals/total_acc_x_train.txt",
-                   "UCI HAR Dataset/test/Inertial Signals/total_acc_x_test.txt",
-                   "total_acc_x.txt")
-  write_concat_csv("UCI HAR Dataset/train/Inertial Signals/total_acc_y_train.txt",
-                   "UCI HAR Dataset/test/Inertial Signals/total_acc_y_test.txt",
-                   "total_acc_y.txt")
-  write_concat_csv("UCI HAR Dataset/train/Inertial Signals/total_acc_z_train.txt",
-                   "UCI HAR Dataset/test/Inertial Signals/total_acc_z_test.txt",
-                   "total_acc_z.txt")
 }
 
 get_mean_index <- function(file)
@@ -147,6 +111,8 @@ extract_variables <- function()
 
 main <- function(outfile)
 {
+  concat_all_csv()
+
   df1 <- get_subject_and_label();
   head(df1)
   
