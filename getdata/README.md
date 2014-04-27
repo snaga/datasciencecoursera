@@ -36,3 +36,6 @@ run_analysis.R generates 3 merged files in the current working directory:
 Then, run_analysis.R generates a tidy data set (dataset.txt) with reading
 3 merged files, activity_labels.txt and features.txt.
 
+    dataset.txt
+
+
