@@ -63,15 +63,22 @@ get_label <- function()
   label <- read.csv("UCI HAR Dataset/activity_labels.txt", header = FALSE, sep = " ")
   y <- read.csv("y.txt", header = FALSE, sep = " ")
   
-#  head(label)
-#  head(y)
+  #head(label)
+  #head(y, n=30)
+
+  y_label <- c()
+  for (i in 1:nrow(y))
+  {
+    for (j in 1:nrow(label))
+    {
+      if (as.integer(y[i,1]) == as.integer(label[j,1]))
+      {
+        y_label[i] <- as.character(label[j,2])
+      }
+    }
+  }
   
-  y_label <- arrange(join(label,y), V1)
-#  head(y_label)
-#  nrow(y)
-#  nrow(label)
-#  nrow(y_label)  
-  return(y_label[,2])
+  return(as.data.frame(y_label))
 }
 
 get_subject <- function()
@@ -83,7 +90,11 @@ get_subject <- function()
 
 get_subject_and_label <- function()
 {
-  subject_and_label <- data.frame(subject = get_subject(), label = get_label())
+  s <- get_subject()
+  l <- get_label()
+  #nrow(s)
+  #nrow(as.data.frame(l))
+  subject_and_label <- data.frame(subject = s, label = l)
 
   names(subject_and_label) <- c("Subject", "Activity_Label")
 
@@ -120,6 +131,9 @@ main <- function(outfile)
   head(df2)
   
   df <- data.frame(df1, df2)
+  
+  ncols <- ncol(df)
+  df <- aggregate(df[,3:ncols], by=df[,1:2], FUN=mean)
   
   f <- get_feature_mean_and_std()
   colname <- c(as.vector(names(df1)), as.vector(f[,2]))
